@@ -3,64 +3,147 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>星際數學挑戰 🚀</title>
+<title>星際數學挑戰 🚀 (本機示範版)</title>
 <style>
     :root { --primary: #4A90E2; --success: #2ECC71; --danger: #E74C3C; --warning: #F1C40F; --dark: #2C3E50; --light: #ECF0F1; }
-    body { margin: 0; padding: 0; font-family: "PingFang HK", "Microsoft JhengHei", sans-serif; background-color: #1a1a2e; color: white; display: flex; flex-direction: column; min-height: 100vh; overflow-y: auto; -webkit-overflow-scrolling: touch; }
-    .header { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background: rgba(0,0,0,0.5); font-size: 20px; font-weight: bold; flex-shrink: 0; }
+    body {
+        margin: 0; padding: 0; font-family: "PingFang HK", "Microsoft JhengHei", sans-serif;
+        background-color: #1a1a2e; color: white; display: flex; flex-direction: column;
+        min-height: 100vh; overflow-y: auto; -webkit-overflow-scrolling: touch;
+    }
+    
+    .header {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 10px 15px; background: rgba(0,0,0,0.5); font-size: 20px; font-weight: bold; flex-shrink: 0;
+    }
     .player-info { color: var(--success); }
-    .btn-home { background: transparent; border: 1px solid rgba(255,255,255,0.3); color: #ccc; font-size: 14px; padding: 4px 10px; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+    
+    .btn-home {
+        background: transparent; border: 1px solid rgba(255,255,255,0.3); color: #ccc;
+        font-size: 14px; padding: 4px 10px; border-radius: 8px; cursor: pointer; transition: 0.2s;
+    }
     .btn-home:hover { background: rgba(255,255,255,0.1); color: white; }
-    .game-container { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px; box-sizing: border-box; width: 100%; }
-    #login-screen { background: var(--light); color: var(--dark); padding: 15px 20px; border-radius: 20px; max-width: 650px; width: 95%; box-shadow: 0 8px 20px rgba(0,0,0,0.4); text-align: center; box-sizing: border-box; margin: auto; max-height: 95vh; overflow-y: auto; }
+    
+    .game-container {
+        flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; 
+        padding: 10px; box-sizing: border-box; width: 100%;
+    }
+    
+    #login-screen {
+        background: var(--light); color: var(--dark); padding: 15px 20px; border-radius: 20px;
+        max-width: 650px; width: 95%; box-shadow: 0 8px 20px rgba(0,0,0,0.4); text-align: center;
+        box-sizing: border-box; margin: auto; max-height: 95vh; overflow-y: auto;
+    }
     .login-title { font-size: 28px; margin: 0 0 10px 0; color: var(--primary); }
-    .rules-box { background: #fff8e1; border: 3px dashed var(--warning); border-radius: 12px; padding: 8px 12px; text-align: left; margin-bottom: 15px; font-size: 15px; line-height: 1.4; color: #555; }
+    
+    .rules-box {
+        background: #fff8e1; border: 3px dashed var(--warning); border-radius: 12px;
+        padding: 8px 12px; text-align: left; margin-bottom: 15px; font-size: 15px; line-height: 1.4; color: #555;
+    }
     .rules-box h3 { margin: 0 0 5px 0; font-size: 18px; color: var(--danger); text-align: center; }
     .rules-box p { margin: 0; }
+    
     .login-inputs { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; }
-    .login-select { font-size: 16px; padding: 6px 10px; border-radius: 8px; border: 2px solid var(--primary); font-weight: bold; outline: none; background: white; cursor: pointer; }
+    .login-select {
+        font-size: 16px; padding: 6px 10px; border-radius: 8px; border: 2px solid var(--primary);
+        font-weight: bold; outline: none; background: white; cursor: pointer;
+    }
+    
     .mini-leaderboard { margin-top: 15px; border-top: 2px solid #ccc; padding-top: 10px; }
     .mini-leaderboard h3 { font-size: 16px; color: var(--danger); margin: 0 0 5px 0; }
     .mini-table { width: 100%; border-collapse: collapse; font-size: 14px; background: white; }
     .mini-table th { background: var(--primary); color: white; padding: 4px; }
     .mini-table td { padding: 4px; border: 1px solid #eee; }
     .mini-table tr:nth-child(even) { background-color: #f9f9f9; }
-    .question-box { background: var(--light); color: var(--dark); padding: 20px 30px; border-radius: 20px; max-width: 800px; width: 95%; box-shadow: 0 8px 20px rgba(0,0,0,0.4); margin-bottom: 15px; display: flex; flex-direction: column; gap: 10px; text-align: center; box-sizing: border-box; }
+    
+    .question-box {
+        background: var(--light); color: var(--dark); padding: 20px 30px; border-radius: 20px;
+        max-width: 800px; width: 95%; box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        margin-bottom: 15px; display: flex; flex-direction: column; gap: 10px; text-align: center; box-sizing: border-box;
+    }
     .q-intro { font-size: 30px; font-weight: bold; color: var(--dark); }
-    .q-compare { font-size: 30px; font-weight: bold; background-color: rgba(241, 196, 15, 0.25); padding: 6px 16px; border-radius: 10px; border: 2px dashed rgba(241, 196, 15, 0.5); display: inline-block; align-self: center; }
-    .q-target { font-size: 30px; font-weight: bold; color: var(--dark); background-color: #e8f4fd; border: 3px solid var(--primary); padding: 6px 16px; border-radius: 10px; display: inline-block; align-self: center; }
-    .equation-area { display: flex; justify-content: center; align-items: center; gap: 15px; font-size: 42px; font-weight: bold; margin-bottom: 20px; }
+    .q-compare {
+        font-size: 30px; font-weight: bold; background-color: rgba(241, 196, 15, 0.25);
+        padding: 6px 16px; border-radius: 10px; border: 2px dashed rgba(241, 196, 15, 0.5);
+        display: inline-block; align-self: center;
+    }
+    .q-target {
+        font-size: 30px; font-weight: bold; color: var(--dark);
+        background-color: #e8f4fd; border: 3px solid var(--primary);
+        padding: 6px 16px; border-radius: 10px; display: inline-block; align-self: center;
+    }
+    .equation-area {
+        display: flex; justify-content: center; align-items: center; gap: 15px;
+        font-size: 42px; font-weight: bold; margin-bottom: 20px;
+    }
     .eq-box { background: white; color: var(--dark); border-radius: 12px; padding: 6px 18px; min-width: 50px; text-align: center; }
-    .eq-circle { width: 65px; height: 65px; border-radius: 50%; border: 4px dashed var(--warning); background: rgba(255, 255, 255, 0.1); color: var(--warning); display: flex; align-items: center; justify-content: center; font-size: 42px; transition: all 0.3s; }
+    .eq-circle {
+        width: 65px; height: 65px; border-radius: 50%; border: 4px dashed var(--warning);
+        background: rgba(255, 255, 255, 0.1); color: var(--warning); display: flex;
+        align-items: center; justify-content: center; font-size: 42px; transition: all 0.3s;
+    }
     .eq-circle.filled { border: 4px solid white; background: var(--dark); color: white; }
     .eq-circle.correct { border: 4px solid white; background: var(--success); color: white; }
     .eq-circle.wrong { border: 4px solid white; background: var(--danger); color: white; }
     .eq-ans { background: #ddd; color: #888; border: 3px solid #ccc; }
     .eq-ans.revealed { background: var(--primary); color: white; border-color: white; }
     .action-area { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
-    .btn { border: none; border-radius: 16px; font-size: 34px; padding: 12px 30px; cursor: pointer; font-weight: bold; color: white; transition: transform 0.1s; box-shadow: 0 6px 0 rgba(0,0,0,0.2); }
+    .btn {
+        border: none; border-radius: 16px; font-size: 34px; padding: 12px 30px; cursor: pointer;
+        font-weight: bold; color: white; transition: transform 0.1s; box-shadow: 0 6px 0 rgba(0,0,0,0.2);
+    }
     .btn:active { transform: translateY(6px); box-shadow: 0 0 0; }
     .btn-add { background-color: var(--primary); }
     .btn-sub { background-color: var(--danger); }
+    
     .start-menu { display: flex; flex-direction: column; gap: 12px; align-items: center; width: 100%; }
     .btn-level { font-size: 26px; padding: 12px 20px; width: 95%; max-width: 550px; }
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 100; overflow-y: auto; padding: 15px 0; }
-    .modal-content { background: white; color: var(--dark); padding: 20px 25px; border-radius: 20px; text-align: center; max-width: 700px; width: 95%; box-sizing: border-box; margin: auto; }
+    
+    .modal-overlay {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.85); display: none; flex-direction: column;
+        align-items: center; justify-content: center; z-index: 100; overflow-y: auto; padding: 15px 0;
+    }
+    .modal-content {
+        background: white; color: var(--dark); padding: 20px 25px; border-radius: 20px;
+        text-align: center; max-width: 700px; width: 95%; box-sizing: border-box; margin: auto;
+    }
+    
     .scaffold-title { color: var(--danger); font-size: 20px; margin-top: 0; margin-bottom: 10px; }
-    .scaffold-continue-btn { font-size: 20px; padding: 10px 20px; border-radius: 10px; border: none; cursor: pointer; background: var(--primary); color: white; font-weight: bold; margin-top: 15px; box-shadow: 0 4px 0 rgba(0,0,0,0.2); }
+    .scaffold-continue-btn {
+        font-size: 20px; padding: 10px 20px; border-radius: 10px; border: none; cursor: pointer;
+        background: var(--primary); color: white; font-weight: bold; margin-top: 15px; box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+    }
     .scaffold-continue-btn:active { transform: translateY(4px); box-shadow: 0 0 0; }
     .bar-chart { display: flex; flex-direction: column; gap: 10px; margin: 15px 0; align-items: flex-start; }
     .bar-row { display: flex; align-items: center; font-weight: bold; }
     .bar-label { width: 90px; font-size: 26px; text-align: right; margin-right: 15px; }
     .bar { height: 30px; border-radius: 8px; transition: width 1s ease-in-out; }
-    .scaffold-btn { font-size: 26px; padding: 10px 30px; margin: 8px; border-radius: 12px; border: 2px solid #ccc; cursor: pointer; background: white; font-weight: bold; }
+    
+    .scaffold-btn {
+        font-size: 26px; padding: 10px 30px; margin: 8px; border-radius: 12px; border: 2px solid #ccc; cursor: pointer; background: white; font-weight: bold;
+    }
     .draw-arrow { stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: dash 1s linear forwards; }
     @keyframes dash { to { stroke-dashoffset: 0; } }
+    
     .leaderboard-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 16px; }
     .leaderboard-table th { background: var(--primary); color: white; padding: 6px; border: 1px solid #ddd; }
     .leaderboard-table td { padding: 6px; border: 1px solid #ddd; }
     .leaderboard-table tr:nth-child(even) { background-color: #f9f9f9; }
     .highlight-row { background-color: #ffeaa7 !important; font-weight: bold; }
+
+    .author-tag {
+        position: fixed;
+        bottom: 8px;
+        right: 12px;
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.65);
+        z-index: 50;
+        pointer-events: none;
+        letter-spacing: 0.5px;
+        font-weight: bold;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+    }
 </style>
 </head>
 <body>
@@ -78,6 +161,7 @@
 <div class="game-container">
     <div id="login-screen">
         <h1 class="login-title">🚀 星際數學挑戰</h1>
+        
         <div class="rules-box">
             <h3>🌟 遊戲玩法 🌟</h3>
             <p>1. ⏱️ <b>限時 60 秒：</b> 在時間內挑戰最高分！<br>
@@ -89,22 +173,34 @@
         <div class="login-inputs">
             <select id="student-class" class="login-select" onchange="updateNumSelect()">
                 <option value="">選擇班別</option>
-                <option value="2A">2A</option><option value="2B">2B</option><option value="2C">2C</option><option value="2D">2D</option>
+                <option value="2A">2A</option>
+                <option value="2B">2B</option>
+                <option value="2C">2C</option>
+                <option value="2D">2D</option>
                 <option value="教師">👨‍🏫 教師</option>
             </select>
-            <select id="student-num" class="login-select"><option value="">選擇學號/姓名</option></select>
+            <select id="student-num" class="login-select">
+                <option value="">選擇學號/姓名</option>
+            </select>
         </div>
         <button class="btn btn-add" style="background:var(--success); font-size:24px; padding: 10px 30px;" onclick="processLogin()">進入遊戲</button>
+        
         <div class="mini-leaderboard" id="miniLeaderboardArea"></div>
     </div>
-    <div id="game-ui" style="display:none; width: 100%; display: flex; flex-direction: column; align-items: center;">
+    
+    <div id="game-ui" style="display:none; width: 100%; flex-direction: column; align-items: center;">
         <div class="question-box" id="questionText">請選擇你要挑戰的難度！</div>
+        
         <div class="equation-area" id="equation-area" style="display:none;">
-            <div class="eq-box" id="eq-x"></div><div class="eq-circle" id="eq-circle">?</div><div class="eq-box" id="eq-y"></div>
-            <div>=</div><div class="eq-box eq-ans" id="eq-ans">?</div>
+            <div class="eq-box" id="eq-x"></div>
+            <div class="eq-circle" id="eq-circle">?</div>
+            <div class="eq-box" id="eq-y"></div>
+            <div>=</div>
+            <div class="eq-box eq-ans" id="eq-ans">?</div>
         </div>
         <div class="action-area" id="step1-area" style="display:none;">
-            <button class="btn btn-add" onclick="checkOperator('+')">➕ 加法</button><button class="btn btn-sub" onclick="checkOperator('-')">➖ 減法</button>
+            <button class="btn btn-add" onclick="checkOperator('+')">➕ 加法</button>
+            <button class="btn btn-sub" onclick="checkOperator('-')">➖ 減法</button>
         </div>
         <div class="start-menu" id="start-area">
             <button class="btn btn-level" style="background:var(--success);" onclick="startGame(1)">🟢 Level 1 (基礎：求相差 / 順向多與少)</button>
@@ -116,32 +212,44 @@
 <div class="modal-overlay" id="scaffoldModal">
     <div class="modal-content">
         <h2 class="scaffold-title">⚠️ 暫停一下，我們來推理！</h2>
+        
         <div id="scaf-sentence-container" style="position: relative; display: inline-block; padding-bottom: 40px; font-size: 28px; font-weight: bold; margin-bottom: 5px; width: 100%;">
             <span id="scaf-sentence"></span>
             <svg id="hint-svg" style="display:none; position:absolute; top: 40px; left:0; width: 100%; height: 50px;" xmlns="http://www.w3.org/2000/svg">
-                <defs><marker id="arrowhead" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto"><polygon points="0 0, 6 2.5, 0 5" fill="var(--danger)" /></marker></defs>
+                <defs>
+                  <marker id="arrowhead" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto">
+                    <polygon points="0 0, 6 2.5, 0 5" fill="var(--danger)" />
+                  </marker>
+                </defs>
                 <path id="hint-path" d="" fill="transparent" stroke="var(--danger)" stroke-width="3" marker-end="url(#arrowhead)"/>
             </svg>
         </div>
+        
         <p id="scaffold-prompt-text" style="font-size: 24px;">這句句子中，『<span id="scaf-keyword-display" style="color:var(--danger); font-weight:bold;"></span>』是指誰？</p>
         <div id="scaffold-btns">
-            <button class="scaffold-btn" id="btn-a" data-choice="A"></button><button class="scaffold-btn" id="btn-b" data-choice="B"></button>
+            <button class="scaffold-btn" id="btn-a" data-choice="A"></button>
+            <button class="scaffold-btn" id="btn-b" data-choice="B"></button>
         </div>
+        
         <div class="bar-chart" id="barChartArea" style="display:none; width:100%; justify-content:center; align-items:center;">
             <div style="display:flex; flex-direction:column; gap:12px; width:100%; max-width: 400px; margin:0 auto;">
                 <div class="bar-row"><div class="bar-label" id="bar-a-name">A</div><div class="bar" id="barA" style="width: 0px;"></div></div>
                 <div class="bar-row"><div class="bar-label" id="bar-b-name">B</div><div class="bar" id="barB" style="width: 0px;"></div></div>
             </div>
         </div>
+        
         <div id="scaffoldResult" style="display:none; margin-top: 15px;"></div>
+        
         <button id="scaffoldContinue" class="scaffold-continue-btn" style="display:none;" onclick="closeScaffold()">我知道了，重新選方法！</button>
     </div>
 </div>
+
 <div class="modal-overlay" id="endModal">
     <div class="modal-content" style="max-height: 90vh; overflow-y: auto;">
         <h1 style="margin-top:0; color: var(--success);">🏆 遊戲完成！</h1>
         <p style="font-size: 24px; margin: 10px 0;">你這次的分數是：<span id="finalScore" style="color:var(--warning); font-weight:bold; font-size: 38px;">0</span></p>
         <p style="font-size: 22px; margin: 0 0 15px 0;">目前排名：第 <span id="currentRank" style="color:var(--danger); font-weight:bold; font-size: 32px;">-</span> 名</p>
+        
         <h3 style="color: var(--primary); border-bottom: 2px solid #ccc; padding-bottom: 5px;">📜 本機最佳成績排行榜 </h3>
         <div id="leaderboardArea"></div>
         <div style="display: flex; gap: 15px; justify-content: center; margin-top: 20px; flex-wrap: wrap;">
@@ -151,57 +259,92 @@
     </div>
 </div>
 
+<div class="author-tag">Designed by 陳綺雯老師</div>
+
 <script>
     var timeLeft = 60, score = 0, combo = 0, level = 1, timerInterval = null, currentQ = {}, isProcessing = false;
     var currentPlayer = { class: "", num: "" };
-    var nameColors = { "小明": "#3498db", "小華": "#e67e22", "軒軒": "#9b59b6", "樂樂": "#1abc9c", "小麗": "#e74c3c", "小志": "#16a085", "美美": "#ff6b81", "晴晴": "#f39c12" };
-    var colorGroups = { "小明": "blue", "軒軒": "purple", "小華": "orange", "晴晴": "orange", "樂樂": "green", "小志": "green", "小麗": "red", "美美": "red" };
+    var nameColors = {
+        "小明": "#3498db", "小華": "#e67e22", "軒軒": "#9b59b6", "樂樂": "#1abc9c", 
+        "小麗": "#e74c3c", "小志": "#16a085", "美美": "#ff6b81", "晴晴": "#f39c12"
+    };
+    var colorGroups = {
+        "小明": "blue", "軒軒": "purple", "小華": "orange", "晴晴": "orange",
+        "樂樂": "green", "小志": "green", "小麗": "red", "美美": "red"
+    };
     var names = ["小明", "小華", "軒軒", "樂樂", "小麗", "小志", "美美", "晴晴"];
-    var items = ["粒糖", "部車仔", "支鉛筆", "張貼紙"];
+    
+    // 🌟 將物品與量詞拆分，支援正規應用題問句文法 🌟
+    var itemList = [
+        { name: "貼紙", unit: "張" },
+        { name: "糖", unit: "粒" },
+        { name: "車仔", unit: "部" },
+        { name: "鉛筆", unit: "支" }
+    ];
+    
     var teachersList = ["陳麗嫦校長", "袁紫茵老師", "陳曉晴老師", "黃柏榮老師", "陳慧淇老師"];
-
+    
     window.onload = function() {
         updateNumSelect();
         renderMiniLeaderboard();
         document.getElementById("game-ui").style.display = "none";
+        
         document.getElementById('btn-a').addEventListener('click', function() { executeSubjectCheck(this.dataset.choice); });
         document.getElementById('btn-b').addEventListener('click', function() { executeSubjectCheck(this.dataset.choice); });
     };
-
+    
     function updateNumSelect() {
         var sClass = document.getElementById("student-class").value;
         var numSelect = document.getElementById("student-num");
         numSelect.innerHTML = '<option value="">選擇學號/姓名</option>';
-        if (sClass === "教師") { teachersList.forEach(t => numSelect.innerHTML += `<option value="${t}">${t}</option>`); }
-        else if (sClass !== "") { for(let i = 1; i <= 30; i++) { numSelect.innerHTML += `<option value="${i}">${i}號</option>`; } }
+        if (sClass === "教師") {
+            for (var i = 0; i < teachersList.length; i++) {
+                numSelect.innerHTML += '<option value="' + teachersList[i] + '">' + teachersList[i] + '</option>';
+            }
+        } else if (sClass !== "") {
+            for(var i = 1; i <= 30; i++) {
+                numSelect.innerHTML += '<option value="' + i + '">' + i + '號</option>';
+            }
+        }
     }
-
+    
     function renderMiniLeaderboard() {
-        var leaderboard = JSON.parse(localStorage.getItem("mathLeaderboard_P2") || "[]");
+        var leaderboard = [];
+        try {
+            var stored = localStorage.getItem("mathLeaderboard_P2");
+            if (stored) leaderboard = JSON.parse(stored);
+        } catch (e) {}
         var lbArea = document.getElementById("miniLeaderboardArea");
         if (leaderboard.length === 0) {
             lbArea.innerHTML = "<p style='color:#888; font-size:14px; margin: 5px 0;'>暫無紀錄，快來成為全級第一名！</p>";
             return;
         }
-        var html = '<h3>🏆 Top 5 神射手</h3><table class="mini-table"><tr><th>排名</th><th>身分</th><th>最高分</th></tr>';
-        leaderboard.slice(0, 5).forEach((p, i) => {
-            let rankDisplay = i < 3 ? ['🥇','🥈','🥉'][i] : (i+1);
-            let identity = p.class === "教師" ? p.num : `${p.class} ${p.num}號`;
-            html += `<tr><td>${rankDisplay}</td><td>${identity}</td><td style="color:var(--danger); font-weight:bold;">${p.bestScore}</td></tr>`;
-        });
-        lbArea.innerHTML = html + '</table>';
+        
+        var html = '<h3>🏆 Top 5 神射手</h3>';
+        html += '<table class="mini-table">';
+        html += '<tr><th>排名</th><th>身分</th><th>最高分</th></tr>';
+        for (var i = 0; i < Math.min(leaderboard.length, 5); i++) {
+            var rankDisplay = (i===0)?'🥇':(i===1)?'🥈':(i===2)?'🥉':(i+1);
+            var identity = (leaderboard[i].class === "教師") ? leaderboard[i].num : (leaderboard[i].class + " " + leaderboard[i].num + "號");
+            html += '<tr><td>' + rankDisplay + '</td><td>' + identity + '</td><td style="color:var(--danger); font-weight:bold;">' + leaderboard[i].bestScore + '</td></tr>';
+        }
+        html += '</table>';
+        lbArea.innerHTML = html;
     }
-
+    
     function processLogin() {
         var sClass = document.getElementById("student-class").value;
         var sNum = document.getElementById("student-num").value;
         if (!sClass || !sNum) { alert("請先選擇您的身分喔！"); return; }
-        currentPlayer = { class: sClass, num: sNum };
-        let identityDisplay = sClass === "教師" ? sNum : `${sClass}班 ${sNum}號`;
-        document.getElementById("playerInfoDisplay").innerText = `👤 ${identityDisplay}`;
+        currentPlayer.class = sClass; currentPlayer.num = sNum;
+        
+        var identityDisplay = (sClass === "教師") ? sNum : (sClass + "班 " + sNum + "號");
+        document.getElementById("playerInfoDisplay").innerText = "👤 " + identityDisplay;
+        
         document.getElementById("login-screen").style.display = "none";
         document.getElementById("game-ui").style.display = "flex";
-        document.getElementById("btnHome").style.display = "inline-block";
+        document.getElementById("btnHome").style.display = "inline-block"; 
+        
         resetToMenu();
     }
     
@@ -213,84 +356,128 @@
         document.getElementById("login-screen").style.display = "block";
         document.getElementById('timeDisplay').innerText = '1:00';
         document.getElementById('scoreDisplay').innerText = '0';
-        renderMiniLeaderboard();
+        renderMiniLeaderboard(); 
     }
-
+    
     function randomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
     function getRandom(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-    function colorName(name) { return `<span style="color:${nameColors[name]}; font-weight:bold;">${name}</span>`; }
+    function colorName(name) { return '<span style="color:' + nameColors[name] + '; font-weight:bold;">' + name + '</span>'; }
+    
     function resetEquationCircle() {
-        let circle = document.getElementById('eq-circle');
-        circle.innerText = '?';
-        circle.className = 'eq-circle';
-        let eqAns = document.getElementById('eq-ans');
-        eqAns.innerText = '?';
-        eqAns.className = 'eq-box eq-ans';
-        isProcessing = false;
+        var circle = document.getElementById('eq-circle');
+        circle.innerText = '?'; circle.className = 'eq-circle'; 
+        var eqAns = document.getElementById('eq-ans');
+        eqAns.innerText = '?'; eqAns.className = 'eq-box eq-ans';
+        isProcessing = false; 
     }
-
+    
     function generateQuestion() {
-        resetEquationCircle();
-        let nameA = getRandom(names), nameB, item = getRandom(items);
-        do { nameB = getRandom(names); } while (nameB === nameA || colorGroups[nameB] === colorGroups[nameA]);
-        
-        let qCategory, rand = Math.random();
-        if (level === 1) { qCategory = rand < 0.5 ? 'diff' : 'L1_target'; }
-        else if (level === 2) { qCategory = 'L2_target'; }
-        else { qCategory = rand < 0.33 ? 'diff' : (rand < 0.66 ? 'L1_target' : 'L2_target'); }
-
-        let X, Y, ans, operator, text, keyword, isTargetB = false;
-
-        if (qCategory === 'diff') {
-            let big = randomInt(7, 15), small = randomInt(2, big - 1), isAMore = Math.random() > 0.5;
-            let valA = isAMore ? big : small, valB = isAMore ? small : big;
-            ans = big - small; operator = '-';
-            let askText = Math.random() > 0.5 ? `${colorName(nameA)} 比 ${colorName(nameB)} 多幾多${item}？` : `${colorName(nameB)} 比 ${colorName(nameA)} 少幾多${item}？`;
-            text = `<div class="q-intro">${colorName(nameA)} 有 ${valA} ${item}。</div><div class="q-intro">${colorName(nameB)} 有 ${valB} ${item}。</div><div class="q-target">${askText}</div>`;
-            X = big; Y = small;
-            currentQ = { nameA, nameB, item, X, Y, valA, valB, ans, operator, qCategory, isTargetB: false };
-        } else {
-            Y = qCategory === 'L1_target' ? randomInt(2, 6) : randomInt(2, 8);
-            if (qCategory === 'L1_target') {
-                isTargetB = true; X = randomInt(8, 14);
-                if (Math.random() > 0.5) { ans = X - Y; operator = '-'; keyword = '少'; } else { ans = X + Y; operator = '+'; keyword = '多'; }
-                text = `<div class="q-intro">${colorName(nameA)} 有 ${X} ${item}。</div><div class="q-compare">${colorName(nameB)} 比 ${colorName(nameA)} ${keyword} ${Y} ${item}。</div><div class="q-target">${colorName(nameB)} 有幾多${item}？</div>`;
-            } else { // L2_target
-                isTargetB = false;
-                if (Math.random() > 0.5) { ans = randomInt(4, 12); X = ans + Y; operator = '-'; keyword = '多'; } else { X = randomInt(4, 12); ans = X + Y; operator = '+'; keyword = '少'; }
-                text = `<div class="q-intro">${colorName(nameA)} 有 ${X} ${item}。</div><div class="q-compare">${colorName(nameA)} 比 ${colorName(nameB)} ${keyword} ${Y} ${item}。</div><div class="q-target">${colorName(nameB)} 有幾多${item}？</div>`;
+        try {
+            resetEquationCircle();
+            var nameA = getRandom(names);
+            var nameB = getRandom(names);
+            while(nameB === nameA || colorGroups[nameB] === colorGroups[nameA]) { nameB = getRandom(names); }
+            
+            // 隨機選取物品與量詞
+            var itemObj = getRandom(itemList);
+            var itemName = itemObj.name;
+            var itemUnit = itemObj.unit;
+            var fullItem = itemUnit + itemName; // 如 "張貼紙"
+            
+            var qCategory = '';
+            if (level === 1) { qCategory = Math.random() < 0.5 ? 'diff' : 'L1_target'; } 
+            else if (level === 2) { qCategory = 'L2_target'; } 
+            else {
+                var rand = Math.random();
+                if (rand < 0.33) qCategory = 'diff'; else if (rand < 0.66) qCategory = 'L1_target'; else qCategory = 'L2_target';
             }
-            currentQ = { nameA, nameB, item, X, Y, ans, operator, keyword, qCategory, isTargetB, scafS1: isTargetB ? nameB : nameA, scafS2: isTargetB ? nameA : nameB };
-        }
-        document.getElementById('questionText').innerHTML = text;
-        document.getElementById('eq-x').innerText = X;
-        document.getElementById('eq-y').innerText = Y;
-        ['equation-area', 'step1-area'].forEach(id => document.getElementById(id).style.display = 'flex');
-        document.getElementById('start-area').style.display = 'none';
+            var X, Y, ans, operator, text, keyword;
+            var isTargetB = false; 
+            
+            if (qCategory === 'diff') {
+                var big = randomInt(7, 15); var small = randomInt(2, big - 1);
+                var isAMore = Math.random() > 0.5;
+                var valA = isAMore ? big : small; var valB = isAMore ? small : big;
+                ans = big - small; operator = '-'; 
+                
+                var askText = (Math.random() > 0.5) 
+                    ? colorName(nameA) + ' 比 ' + colorName(nameB) + ' 多幾' + itemUnit + itemName + '？'
+                    : colorName(nameB) + ' 比 ' + colorName(nameA) + ' 少幾' + itemUnit + itemName + '？';
+                text = '<div class="q-intro">' + colorName(nameA) + ' 有 ' + valA + ' ' + fullItem + '。</div>' +
+                       '<div class="q-intro">' + colorName(nameB) + ' 有 ' + valB + ' ' + fullItem + '。</div>' +
+                       '<div class="q-target">' + askText + '</div>';
+                
+                X = big; Y = small; 
+                currentQ = { nameA: nameA, nameB: nameB, item: fullItem, itemName: itemName, itemUnit: itemUnit, X: X, Y: Y, valA: valA, valB: valB, ans: ans, operator: operator, qCategory: qCategory, isTargetB: false };
+                
+            } else if (qCategory === 'L1_target') {
+                isTargetB = true; 
+                X = randomInt(8, 14); Y = randomInt(2, 6);
+                var isAMore = Math.random() > 0.5;
+                if(isAMore) { 
+                    ans = X - Y; operator = '-'; keyword = '少';
+                    // 🌟 修正文法：「B 有 [物品] 多少 [量詞]？」
+                    text = '<div class="q-intro">' + colorName(nameA) + ' 有 ' + X + ' ' + fullItem + '。</div><div class="q-compare">' + colorName(nameB) + ' 比 ' + colorName(nameA) + ' 少 ' + Y + ' ' + fullItem + '。</div><div class="q-target">' + colorName(nameB) + ' 有 ' + itemName + ' 多少 ' + itemUnit + '？</div>';
+                } else {
+                    ans = X + Y; operator = '+'; keyword = '多';
+                    text = '<div class="q-intro">' + colorName(nameA) + ' 有 ' + X + ' ' + fullItem + '。</div><div class="q-compare">' + colorName(nameB) + ' 比 ' + colorName(nameA) + ' 多 ' + Y + ' ' + fullItem + '。</div><div class="q-target">' + colorName(nameB) + ' 有 ' + itemName + ' 多少 ' + itemUnit + '？</div>';
+                }
+                currentQ = { nameA: nameA, nameB: nameB, item: fullItem, itemName: itemName, itemUnit: itemUnit, X: X, Y: Y, ans: ans, operator: operator, keyword: keyword, qCategory: qCategory, isTargetB: isTargetB, scafS1: isTargetB ? nameB : nameA, scafS2: isTargetB ? nameA : nameB };
+            } else {
+                isTargetB = false;
+                Y = randomInt(2, 8);
+                var isAMore = Math.random() > 0.5;
+                if(isAMore) {
+                    ans = randomInt(4, 12); X = ans + Y; operator = '-'; keyword = '多';
+                    // 🌟 修正文法：「B 有 [物品] 多少 [量詞]？」
+                    text = '<div class="q-intro">' + colorName(nameA) + ' 有 ' + X + ' ' + fullItem + '。</div><div class="q-compare">' + colorName(nameA) + ' 比 ' + colorName(nameB) + ' 多 ' + Y + ' ' + fullItem + '。</div><div class="q-target">' + colorName(nameB) + ' 有 ' + itemName + ' 多少 ' + itemUnit + '？</div>';
+                } else {
+                    X = randomInt(4, 12); ans = X + Y; operator = '+'; keyword = '少';
+                    text = '<div class="q-intro">' + colorName(nameA) + ' 有 ' + X + ' ' + fullItem + '。</div><div class="q-compare">' + colorName(nameA) + ' 比 ' + colorName(nameB) + ' 少 ' + Y + ' ' + fullItem + '。</div><div class="q-target">' + colorName(nameB) + ' 有 ' + itemName + ' 多少 ' + itemUnit + '？</div>';
+                }
+                currentQ = { nameA: nameA, nameB: nameB, item: fullItem, itemName: itemName, itemUnit: itemUnit, X: X, Y: Y, ans: ans, operator: operator, keyword: keyword, qCategory: qCategory, isTargetB: isTargetB, scafS1: isTargetB ? nameB : nameA, scafS2: isTargetB ? nameA : nameB };
+            }
+            
+            document.getElementById('questionText').innerHTML = text;
+            document.getElementById('eq-x').innerText = X;
+            document.getElementById('eq-y').innerText = Y;
+            document.getElementById('equation-area').style.display = 'flex';
+            document.getElementById('step1-area').style.display = 'flex';
+            document.getElementById('start-area').style.display = 'none';
+        } catch (e) { console.error(e); }
     }
-
+    
     function checkOperator(op) {
         if(isProcessing) return;
         isProcessing = true;
-        let circle = document.getElementById('eq-circle');
-        circle.innerText = op; circle.classList.add('filled');
-        if (op === currentQ.operator) {
-            circle.classList.add('correct');
-            let eqAns = document.getElementById('eq-ans');
-            eqAns.innerText = currentQ.ans; eqAns.classList.add('revealed');
+        var circle = document.getElementById('eq-circle');
+        circle.innerText = op; circle.classList.add('filled'); 
+        if(op === currentQ.operator) {
+            circle.classList.add('correct'); 
+            var eqAns = document.getElementById('eq-ans');
+            eqAns.innerText = currentQ.ans; eqAns.classList.add('revealed'); 
             combo++; score += Math.floor((level * 10) * (combo > 2 ? 1.5 : 1));
             updateHeader();
-            setTimeout(() => { if (timeLeft > 0) generateQuestion(); }, 1200);
+            
+            setTimeout(function() { 
+                isProcessing = false; 
+                if(timeLeft > 0) generateQuestion(); 
+            }, 1200);
         } else {
-            circle.classList.add('wrong'); combo = 0; updateHeader();
-            setTimeout(() => { if (timeLeft > 0) openScaffold(); }, 600);
+            circle.classList.add('wrong'); 
+            combo = 0; updateHeader();
+            setTimeout(function() {
+                isProcessing = false; 
+                if(timeLeft > 0) { openScaffold(); }
+            }, 600);
         }
     }
 
     function openScaffold() {
         if(timerInterval) { clearInterval(timerInterval); timerInterval = null; }
         document.getElementById('scaffoldModal').style.display = 'flex';
-        let isDiff = currentQ.qCategory === 'diff';
+        
+        var isDiff = currentQ.qCategory === 'diff';
         document.getElementById('scaf-sentence-container').style.display = isDiff ? 'none' : 'inline-block';
         document.getElementById('scaffold-prompt-text').style.display = isDiff ? 'none' : 'block';
         document.getElementById('scaffold-btns').style.display = isDiff ? 'none' : 'block';
@@ -301,133 +488,205 @@
             document.getElementById('bar-b-name').innerHTML = colorName(currentQ.nameB);
             document.getElementById('barA').style.backgroundColor = nameColors[currentQ.nameA];
             document.getElementById('barB').style.backgroundColor = nameColors[currentQ.nameB];
-            let resText = '<div style="font-size: 18px; color: #777; margin-bottom: 10px;">💡 提示：</div><div style="background-color: #fff8e1; border: 3px dashed var(--warning); border-radius: 12px; padding: 15px 20px;"><div style="font-size: 20px; color: #555; margin-bottom: 5px;">比較兩個數量找相差，</div><div style="font-size: 32px; font-weight: 900; color: var(--danger); line-height: 1.3;">我們一定要用 減法 ➖ 喔！</div></div>';
+            
+            var resText = '<div style="font-size: 18px; color: #777; margin-bottom: 10px;">💡 提示：</div><div style="background-color: #fff8e1; border: 3px dashed var(--warning); border-radius: 12px; padding: 15px 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);"><div style="font-size: 20px; color: #555; margin-bottom: 5px;">比較兩個數量找相差，</div><div style="font-size: 32px; font-weight: 900; color: var(--danger); line-height: 1.3;">我們一定要用 減法 ➖ 喔！</div></div>';
+            
             document.getElementById('scaffoldResult').innerHTML = resText;
             document.getElementById('scaffoldResult').style.display = 'block';
-            setTimeout(() => {
+            
+            setTimeout(function() {
                 document.getElementById('barA').style.width = (currentQ.valA * 12 + 40) + 'px';
                 document.getElementById('barB').style.width = (currentQ.valB * 12 + 40) + 'px';
                 document.getElementById('scaffoldContinue').style.display = 'inline-block';
             }, 300);
         } else {
-            let { scafS1, scafS2, keyword, Y, item } = currentQ;
-            document.getElementById('scaf-sentence').innerHTML = `「<span id="w-subj1">${colorName(scafS1)}</span> 比 <span id="w-subj2">${colorName(scafS2)}</span> <span id="w-keyword" style="color:var(--danger)">${keyword}</span> ${Y} ${item}」`;
-            document.getElementById('scaf-keyword-display').innerText = keyword;
-            document.getElementById('btn-a').innerHTML = colorName(scafS1);
-            document.getElementById('btn-b').innerHTML = colorName(scafS2);
+            document.getElementById('scaffold-prompt-text').innerHTML = '這句句子中，『<span id="scaf-keyword-display" style="color:var(--danger); font-weight:bold;"></span>』是指誰？';
+            document.getElementById('scaffoldResult').style.display = 'none';
+            document.getElementById('scaffoldContinue').style.display = 'none';
+            document.getElementById('hint-svg').style.display = 'none';
+            document.getElementById('barA').style.width = '0px'; document.getElementById('barB').style.width = '0px';
+            
+            var subj1 = currentQ.scafS1;
+            var subj2 = currentQ.scafS2;
+            
+            var sentenceHTML = '「<span id="w-subj1">' + colorName(subj1) + '</span> 比 <span id="w-subj2">' + colorName(subj2) + '</span> <span id="w-keyword" style="color:var(--danger)">' + currentQ.keyword + '</span> ' + currentQ.Y + ' ' + currentQ.item + '」';
+            document.getElementById('scaf-sentence').innerHTML = sentenceHTML;
+            document.getElementById('scaf-keyword-display').innerText = currentQ.keyword;
+            
+            document.getElementById('btn-a').innerHTML = colorName(subj1);
+            document.getElementById('btn-b').innerHTML = colorName(subj2);
         }
     }
     
     function executeSubjectCheck(btnChoice) {
-        if (btnChoice === 'A') { // Correct choice
+        var snapshotS1 = currentQ.scafS1;
+        var snapshotS2 = currentQ.scafS2;
+        var isCorrect = (btnChoice === 'A');
+        
+        if(isCorrect) {
             document.getElementById('scaffold-btns').style.display = 'none';
             document.getElementById('scaffold-prompt-text').style.display = 'none';
             document.getElementById('barChartArea').style.display = 'flex';
-            let { scafS1, scafS2, keyword, operator } = currentQ;
-            let cSubj = colorName(scafS1), cOther = colorName(scafS2);
-            let resText = `<div style="font-size: 18px; color: #777; margin-bottom: 8px;">✅ 答對了！『${keyword}』是指 ${cSubj}。</div><div style="background-color: #fff8e1; border: 3px dashed var(--warning); border-radius: 12px; padding: 12px 20px;"><div style="font-size: 20px; color: #555; margin-bottom: 5px;">所以，</div>`;
-            resText += keyword === '少' ? `<div style="font-size: 32px; font-weight: 900; color: var(--dark); line-height: 1.3;">${cSubj} 較少，<br>${cOther} 較多！</div></div>` : `<div style="font-size: 32px; font-weight: 900; color: var(--dark); line-height: 1.3;">${cSubj} 較多，<br>${cOther} 較少！</div></div>`;
+            document.getElementById('hint-svg').style.display = 'none';
+            
+            var cSubj = colorName(snapshotS1);
+            var cOther = colorName(snapshotS2);
+            
+            var resText = '<div style="font-size: 18px; color: #777; margin-bottom: 8px;">✅ 答對了！『' + currentQ.keyword + '』是指 ' + cSubj + '。</div><div style="background-color: #fff8e1; border: 3px dashed var(--warning); border-radius: 12px; padding: 12px 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);"><div style="font-size: 20px; color: #555; margin-bottom: 5px;">所以，</div>';
+            if(currentQ.keyword === '少') { resText += '<div style="font-size: 32px; font-weight: 900; color: var(--dark); line-height: 1.3;">' + cSubj + ' 較少，<br>' + cOther + ' 較多！</div></div>'; } 
+            else { resText += '<div style="font-size: 32px; font-weight: 900; color: var(--dark); line-height: 1.3;">' + cSubj + ' 較多，<br>' + cOther + ' 較少！</div></div>'; }
+            
             document.getElementById('scaffoldResult').innerHTML = resText;
             document.getElementById('scaffoldResult').style.display = 'block';
+            
             document.getElementById('bar-a-name').innerHTML = cSubj;
             document.getElementById('bar-b-name').innerHTML = cOther;
-            document.getElementById('barA').style.backgroundColor = nameColors[scafS1];
-            document.getElementById('barB').style.backgroundColor = nameColors[scafS2];
-            setTimeout(() => {
-                let baseWidth = 120, diffWidth = 80;
-                let isPlus = operator === '+';
-                document.getElementById('barA').style.width = (isPlus ? baseWidth : baseWidth + diffWidth) + 'px';
-                document.getElementById('barB').style.width = (isPlus ? baseWidth + diffWidth : baseWidth) + 'px';
+            document.getElementById('barA').style.backgroundColor = nameColors[snapshotS1];
+            document.getElementById('barB').style.backgroundColor = nameColors[snapshotS2];
+            
+            setTimeout(function() {
+                var baseWidth = 120, diffWidth = 80;
+                if(currentQ.keyword === '多') {
+                    document.getElementById('barA').style.width = (baseWidth + diffWidth) + 'px'; 
+                    document.getElementById('barB').style.width = baseWidth + 'px';
+                } else {
+                    document.getElementById('barA').style.width = baseWidth + 'px'; 
+                    document.getElementById('barB').style.width = (baseWidth + diffWidth) + 'px';
+                }
                 document.getElementById('scaffoldContinue').style.display = 'inline-block';
             }, 300);
-        } else { // Wrong choice
-            handleWrongChoice();
+            
+        } else {
+            document.getElementById('scaffold-prompt-text').innerHTML = '哎呀，再看清楚！『<span style="color:var(--danger); font-weight:bold;">' + currentQ.keyword + '</span>』是緊接著誰的名字？';
+            
+            var k = document.getElementById('w-keyword'); 
+            var s1 = document.getElementById('w-subj1');
+            var svg = document.getElementById('hint-svg'); 
+            var path = document.getElementById('hint-path');
+            var container = document.getElementById('scaf-sentence-container');
+            
+            if (k && s1 && svg && path && container) {
+                var containerRect = container.getBoundingClientRect();
+                var kRect = k.getBoundingClientRect();
+                var s1Rect = s1.getBoundingClientRect();
+                
+                var startX = (kRect.left + kRect.width / 2) - containerRect.left;
+                var endX = (s1Rect.left + s1Rect.width / 2) - containerRect.left;
+                var midX = (startX + endX) / 2;
+                
+                svg.style.display = 'block';
+                path.setAttribute('d', 'M ' + startX + ' 0 Q ' + midX + ' 40 ' + endX + ' 0');
+                path.classList.remove('draw-arrow'); 
+                void path.offsetWidth; 
+                path.classList.add('draw-arrow');
+            }
         }
     }
     
-    function handleWrongChoice() {
-        document.getElementById('scaffold-prompt-text').innerHTML = `哎呀，再看清楚！『<span style="color:var(--danger); font-weight:bold;">${currentQ.keyword}</span>』是緊接著誰的名字？`;
-        let k = document.getElementById('w-keyword'), s1 = document.getElementById('w-subj1'), svg = document.getElementById('hint-svg'), path = document.getElementById('hint-path'), container = document.getElementById('scaf-sentence-container');
-        if (k && s1 && svg && path && container) {
-            let containerRect = container.getBoundingClientRect(), kRect = k.getBoundingClientRect(), s1Rect = s1.getBoundingClientRect();
-            let startX = (kRect.left + kRect.width / 2) - containerRect.left;
-            let endX = (s1Rect.left + s1Rect.width / 2) - containerRect.left;
-            let midX = (startX + endX) / 2;
-            svg.style.display = 'block';
-            path.setAttribute('d', `M ${startX} 0 Q ${midX} 40 ${endX} 0`);
-            path.classList.remove('draw-arrow');
-            void path.offsetWidth;
-            path.classList.add('draw-arrow');
-        }
-    }
-
     function closeScaffold() {
         document.getElementById('scaffoldModal').style.display = 'none';
-        // 釜底抽薪：徹底還原提示視窗內的所有動態內容
+        
         document.getElementById('scaffold-prompt-text').innerHTML = '這句句子中，『<span id="scaf-keyword-display" style="color:var(--danger); font-weight:bold;"></span>』是指誰？';
         document.getElementById('scaffoldResult').style.display = 'none';
         document.getElementById('scaffoldContinue').style.display = 'none';
         document.getElementById('hint-svg').style.display = 'none';
         
-        if (!timerInterval) { timerInterval = setInterval(updateTime, 1000); }
-        resetEquationCircle();
+        if(!timerInterval) { timerInterval = setInterval(updateTime, 1000); }
+        resetEquationCircle(); 
     }
-
+    
     function updateHeader() {
         document.getElementById('scoreDisplay').innerText = score;
         document.getElementById('levelDisplay').innerText = level;
-        document.getElementById('comboDisplay').innerText = combo >= 2 ? `(🔥Combo x${combo})` : '';
+        document.getElementById('comboDisplay').innerText = combo >= 2 ? '(🔥Combo x' + combo + ')' : '';
     }
-
+    
     function updateTime() {
-        if (timeLeft > 0) {
-            timeLeft--;
-            let m = Math.floor(timeLeft / 60), s = timeLeft % 60;
-            document.getElementById('timeDisplay').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
-        } else { endGame(); }
+        timeLeft--;
+        var m = Math.floor(timeLeft / 60); var s = timeLeft % 60;
+        document.getElementById('timeDisplay').innerText = m + ':' + (s < 10 ? '0' : '') + s;
+        if(timeLeft <= 0) endGame();
     }
-
+    
     function startGame(selectedLevel) {
         if(timerInterval) clearInterval(timerInterval);
         level = selectedLevel; score = 0; timeLeft = 60; combo = 0;
-        updateHeader();
-        generateQuestion();
+        updateHeader(); generateQuestion();
         document.getElementById('timeDisplay').innerText = '1:00';
         timerInterval = setInterval(updateTime, 1000);
     }
-
+    
     function saveAndGetLeaderboard() {
-        let playerID = `${currentPlayer.class}-${currentPlayer.num}`;
-        let leaderboard = JSON.parse(localStorage.getItem("mathLeaderboard_P2") || "[]");
-        let playerIndex = leaderboard.findIndex(p => p.id === playerID);
-        if (playerIndex > -1) {
-            leaderboard[playerIndex].attempts++;
-            leaderboard[playerIndex].bestScore = Math.max(score, leaderboard[playerIndex].bestScore);
-        } else {
-            leaderboard.push({ id: playerID, class: currentPlayer.class, num: currentPlayer.num, bestScore: score, attempts: 1 });
+        var playerID = currentPlayer.class + "-" + currentPlayer.num;
+        var leaderboard = [];
+        
+        try {
+            var stored = localStorage.getItem("mathLeaderboard_P2");
+            if (stored) leaderboard = JSON.parse(stored);
+        } catch (e) {}
+        
+        var existingPlayerIndex = -1;
+        for (var i = 0; i < leaderboard.length; i++) {
+            if (leaderboard[i].id === playerID) { existingPlayerIndex = i; break; }
         }
-        leaderboard.sort((a, b) => b.bestScore - a.bestScore);
         
-        // 🌟 更新排名
-        let currentRank = leaderboard.findIndex(p => p.id === playerID) + 1;
-        document.getElementById('currentRank').innerText = currentRank > 0 ? currentRank : '-';
+        if (existingPlayerIndex !== -1) {
+            leaderboard[existingPlayerIndex].attempts += 1;
+            if (score > leaderboard[existingPlayerIndex].bestScore) {
+                leaderboard[existingPlayerIndex].bestScore = score;
+            }
+        } else {
+            leaderboard.push({
+                id: playerID, class: currentPlayer.class, num: currentPlayer.num, bestScore: score, attempts: 1
+            });
+        }
         
-        try { localStorage.setItem("mathLeaderboard_P2", JSON.stringify(leaderboard)); } catch(e) { console.error("Failed to save to localStorage", e); }
+        leaderboard.sort(function(a, b) { return b.bestScore - a.bestScore; });
         
-        let html = '<table class="leaderboard-table"><tr><th>排名</th><th>身分</th><th>最佳分數</th><th>挑戰次數</th></tr>';
-        leaderboard.forEach((p, i) => {
-            let rowClass = p.id === playerID ? 'highlight-row' : '';
-            let rankDisplay = i < 3 ? ['🥇','🥈','🥉'][i] : (i+1);
-            let identity = p.class === "教師" ? p.num : `${p.class}班 ${p.num}號`;
-            html += `<tr class="${rowClass}"><td>${rankDisplay}</td><td>${identity}</td><td style="color:var(--danger); font-weight:bold;">${p.bestScore}</td><td>${p.attempts}次</td></tr>`;
-        });
-        return html + '</table>';
+        var currentRank = -1;
+        for (var j = 0; j < leaderboard.length; j++) {
+            if (leaderboard[j].id === playerID) {
+                currentRank = j + 1;
+                break;
+            }
+        }
+        if (document.getElementById('currentRank')) {
+            document.getElementById('currentRank').innerText = currentRank > 0 ? currentRank : '-';
+        }
+        
+        try { localStorage.setItem("mathLeaderboard_P2", JSON.stringify(leaderboard)); } catch(e){}
+        
+        var html = '<table class="leaderboard-table">';
+        html += '<tr><th>排名</th><th>身分</th><th>最佳分數</th><th>挑戰次數</th></tr>';
+        
+        for (var k = 0; k < leaderboard.length; k++) {
+            var rowClass = (leaderboard[k].id === playerID) ? 'highlight-row' : '';
+            var rank = k + 1;
+            var rankDisplay = rank;
+            if(rank === 1) rankDisplay = '🥇 1';
+            if(rank === 2) rankDisplay = '🥈 2';
+            if(rank === 3) rankDisplay = '🥉 3';
+            
+            var identity = (leaderboard[k].class === "教師") ? leaderboard[k].num : (leaderboard[k].class + "班 " + leaderboard[k].num + "號");
+            
+            html += '<tr class="' + rowClass + '">';
+            html += '<td>' + rankDisplay + '</td>';
+            html += '<td>' + identity + '</td>';
+            html += '<td style="color:var(--danger); font-weight:bold;">' + leaderboard[k].bestScore + '</td>';
+            html += '<td>' + leaderboard[k].attempts + '次</td>';
+            html += '</tr>';
+        }
+        html += '</table>';
+        return html;
     }
-
+    
     function endGame() {
-        if(timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+        if(timerInterval) clearInterval(timerInterval);
         document.getElementById('finalScore').innerText = score;
-        document.getElementById('leaderboardArea').innerHTML = saveAndGetLeaderboard();
+        
+        var lbHtml = saveAndGetLeaderboard();
+        document.getElementById('leaderboardArea').innerHTML = lbHtml;
+        
         document.getElementById('endModal').style.display = 'flex';
     }
     
@@ -435,7 +694,7 @@
         document.getElementById('endModal').style.display = 'none';
         backToLogin();
     }
-
+    
     function resetToMenu() {
         document.getElementById('endModal').style.display = 'none';
         document.getElementById("questionText").innerHTML = "請選擇你要挑戰的難度！";
